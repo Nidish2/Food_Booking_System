@@ -48,7 +48,7 @@ export function ProfilePage() {
           </div>
         </div>
         <div className="mt-6 flex justify-end">
-          <Button variant="secondary" onClick={handleLogout}>
+          <Button variant="danger" onClick={handleLogout}>
             Logout
           </Button>
         </div>

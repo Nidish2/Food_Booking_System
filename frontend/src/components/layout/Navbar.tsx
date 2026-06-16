@@ -1,18 +1,10 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Building2, LogOut, UserCircle } from "lucide-react";
-import toast from "react-hot-toast";
+import { Building2, UserCircle } from "lucide-react";
 import { Button } from "../common/Button";
 import { useAuth } from "../../hooks/useAuth";
 
 export function Navbar() {
-  const navigate = useNavigate();
-  const { user, logout } = useAuth();
-
-  const handleLogout = async () => {
-    await logout();
-    toast.success("Logged out successfully.");
-    navigate("/login");
-  };
+  const { user } = useAuth();
 
   const navClass = ({ isActive }: { isActive: boolean }) =>
     `rounded-md px-3 py-2 text-sm font-semibold transition ${
@@ -46,10 +38,6 @@ export function Navbar() {
           <NavLink to="/profile" className={navClass}>
             <UserCircle className="inline h-4 w-4" /> {user?.name}
           </NavLink>
-          <Button variant="ghost" onClick={handleLogout} aria-label="Logout">
-            <LogOut className="h-4 w-4" />
-            Logout
-          </Button>
         </nav>
       </div>
     </header>
