@@ -2,6 +2,10 @@
 
 A full-stack enterprise-grade hotel booking application built with React, Node.js, Express, and PostgreSQL using Prisma.
 
+## Live Deployments
+- **Frontend (Vercel)**: [hotel-booking-system-official.vercel.app](https://hotel-booking-system-official.vercel.app/)
+- **Backend (Render)**: Deployed on Render web service.
+
 ## Technology Stack
 
 - **Frontend**: React 18, Vite, TypeScript, Tailwind CSS, React Router, React Query, React Hook Form + Zod, Vitest & React Testing Library (for testing).
@@ -54,8 +58,8 @@ A full-stack enterprise-grade hotel booking application built with React, Node.j
    ```
 
 ### 4. Running Tests
-- **Backend**: In the `backend` directory, run `npm run test`.
-- **Frontend**: In the `frontend` directory, run `npm run test`.
+- **Backend**: In the `backend` directory, run `npm run test` (executes 33 integration & unit tests covering RBAC, double-booking validation, and user/review logic).
+- **Frontend**: In the `frontend` directory, run `npm run test` (executes 18 component and utility tests covering custom date math, currency formatting, badge variants, and inputs).
 
 ## Features
 - **Role-Based Access Control (RBAC)**: Admin and User roles with distinct permissions.
@@ -64,6 +68,10 @@ A full-stack enterprise-grade hotel booking application built with React, Node.j
 - **Booking History & Status**: View upcoming, active, completed, and cancelled bookings.
 - **Review & Feedback System**: Users can rate and comment on completed bookings.
 - **Profile & Auth**: Secure JWT-based authentication with password hashing and forgot password workflows.
+- **Modern Glassmorphism Layout**: Elegant, responsive dashboard styling featuring transparent glass containers, sidebars, headers, form controls, and dialog overlays with backdrop blurs.
+- **Accessible Theme Toggle**: A seamless light/dark mode switch is available site-wide (including login/signup pages) featuring high-contrast link colors (WCAG compliant) for optimal dark mode legibility.
+- **React Portals Integration**: Escaped CSS stacking context traps (caused by Framer Motion page transitions) by mounting modals under `document.body`, ensuring full-screen blur coverage.
+- **Production-Ready Rate Limiting**: Placed CORS middleware ahead of the rate limiter to prevent CORS preflight blocks. Bypasses rate limiting in local dev environments and returns structured JSON errors in production.
 
 ## Assumptions Made
 1. **Password Standards**: All dummy users created via the seed script share a common password (`Password@123`) for ease of evaluation and testing.
