@@ -2,14 +2,21 @@ import type { Request, Response } from "express";
 import { env } from "../config/env.js";
 import { httpStatus } from "../constants/httpStatus.js";
 import { authService } from "../services/auth.service.js";
-import type { LoginInput, RegisterInput } from "../validators/auth.validator.js";
+import type {
+  LoginInput,
+  RegisterInput,
+} from "../validators/auth.validator.js";
 
 const setAuthCookie = (res: Response, token: string) => {
+  const isProd = env.NODE_ENV === "production";
+
   res.cookie("token", token, {
     httpOnly: true,
-    sameSite: "lax",
-    secure: env.NODE_ENV === "production",
-    maxAge: 24 * 60 * 60 * 1000
+    // "none" is mandatory for cross-domain cookie passing (Vercel <-> Render)
+    sameSite: isProd ? "none" : "lax",
+    // "secure" must be true if sameSite is "none" (required by modern browsers)
+    secure: isProd ? true : false,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
   });
 };
 
@@ -20,7 +27,7 @@ export const authController = {
     res.status(httpStatus.CREATED).json({
       success: true,
       message: "Registration successful.",
-      data: result
+      data: result,
     });
   },
 
@@ -30,7 +37,7 @@ export const authController = {
     res.status(httpStatus.OK).json({
       success: true,
       message: "Login successful.",
-      data: result
+      data: result,
     });
   },
 
@@ -38,7 +45,7 @@ export const authController = {
     res.status(httpStatus.OK).json({
       success: true,
       message: "Authenticated user fetched successfully.",
-      data: { user: req.user }
+      data: { user: req.user },
     });
   },
 
@@ -46,7 +53,7 @@ export const authController = {
     res.clearCookie("token");
     res.status(httpStatus.OK).json({
       success: true,
-      message: "Logout successful."
+      message: "Logout successful.",
     });
   },
 
@@ -55,7 +62,7 @@ export const authController = {
     res.status(httpStatus.OK).json({
       success: true,
       message: "If this email exists, a password reset link would be sent.",
-      data: result
+      data: result,
     });
   },
 
@@ -63,7 +70,8 @@ export const authController = {
     await authService.resetPassword(req.body);
     res.status(httpStatus.OK).json({
       success: true,
-      message: "Password reset successful. Please sign in with your new password."
+      message:
+        "Password reset successful. Please sign in with your new password.",
     });
-  }
+  },
 };
