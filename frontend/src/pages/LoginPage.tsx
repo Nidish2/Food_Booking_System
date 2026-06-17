@@ -106,7 +106,7 @@ export function LoginPage() {
             <div className="text-right">
               <Link
                 to="/forgot-password"
-                className="text-xs font-semibold text-brand-blue dark:text-brand-blue hover:underline"
+                className="text-xs font-semibold text-brand-blue dark:text-blue-400 hover:underline"
               >
                 Forgot password?
               </Link>
@@ -124,7 +124,7 @@ export function LoginPage() {
               New user?{" "}
               <Link
                 to="/signup"
-                className="font-semibold text-brand-blue hover:underline"
+                className="font-semibold text-brand-blue dark:text-blue-400 hover:underline"
               >
                 Create an account
               </Link>

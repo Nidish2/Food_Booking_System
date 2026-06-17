@@ -123,7 +123,7 @@ export function SignupPage() {
               Already registered?{" "}
               <Link
                 to="/login"
-                className="font-semibold text-brand-blue hover:underline"
+                className="font-semibold text-brand-blue dark:text-blue-400 hover:underline"
               >
                 Sign in
               </Link>

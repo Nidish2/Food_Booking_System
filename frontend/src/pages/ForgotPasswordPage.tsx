@@ -98,7 +98,7 @@ export function ForgotPasswordPage() {
                   <div className="flex items-center justify-center md:justify-start pt-2">
                     <Link
                       to="/login"
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue transition"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-blue-400 transition"
                     >
                       <ArrowLeft className="h-4 w-4" />
                       <span>Back to sign in</span>
@@ -133,9 +133,9 @@ export function ForgotPasswordPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="rounded-xl border border-dashed border-brand-blue/30 bg-brand-blue/[0.02] p-4 text-left space-y-2"
+                    className="rounded-xl border border-dashed border-brand-blue/30 dark:border-blue-500/20 bg-brand-blue/[0.02] dark:bg-blue-500/[0.02] p-4 text-left space-y-2"
                   >
-                    <p className="text-xs font-bold uppercase tracking-wider text-brand-blue">Development Sandbox</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-brand-blue dark:text-blue-400">Development Sandbox</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
                       The email reset link was intercepted locally. You can open and review the Ethereal message:
                     </p>
@@ -143,7 +143,7 @@ export function ForgotPasswordPage() {
                       href={previewUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 dark:text-white hover:text-brand-blue dark:hover:text-brand-blue transition bg-white dark:bg-zinc-800 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 dark:text-white hover:text-brand-blue dark:hover:text-blue-400 transition bg-white dark:bg-zinc-800 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm"
                     >
                       <span>Inspect Ethereal Mail</span>
                       <ExternalLink className="h-3 w-3" />
@@ -154,7 +154,7 @@ export function ForgotPasswordPage() {
                 <div className="border-t border-slate-100 dark:border-white/5 pt-6">
                   <Link
                     to="/login"
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue transition"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-blue-400 transition"
                   >
                     <ArrowLeft className="h-4 w-4" />
                     <span>Return to Sign In</span>

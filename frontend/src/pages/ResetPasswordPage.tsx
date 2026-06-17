@@ -113,7 +113,7 @@ export function ResetPasswordPage() {
                 <div className="border-t border-slate-100 dark:border-white/5 pt-5">
                   <Link
                     to="/login"
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue transition"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-blue-400 transition"
                   >
                     <ArrowLeft className="h-4 w-4" />
                     <span>Return to Sign In</span>
@@ -193,7 +193,7 @@ export function ResetPasswordPage() {
                   <div className="flex items-center justify-center md:justify-start pt-2">
                     <Link
                       to="/forgot-password"
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue transition"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-blue-400 transition"
                     >
                       <ArrowLeft className="h-4 w-4" />
                       <span>Request new link</span>

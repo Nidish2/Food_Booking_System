@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Building2 } from "lucide-react";
+import { Building2, Sun, Moon } from "lucide-react";
 import { motion } from "framer-motion";
 import { Footer } from "./Footer";
 import { useAuth } from "../../hooks/useAuth";
+import { useTheme } from "../../hooks/useTheme";
 
 export function PublicLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-black text-slate-900 dark:text-slate-100 transition-colors duration-300 relative overflow-hidden">
@@ -25,6 +27,19 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
             </div>
             <span>Hotel Booking</span>
           </Link>
+
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={toggleTheme}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-white hover:bg-slate-200 dark:hover:bg-white/10 transition cursor-pointer"
+            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+          >
+            {theme === "light" ? (
+              <Moon className="h-4 w-4 text-slate-600" />
+            ) : (
+              <Sun className="h-4 w-4 text-amber-300" />
+            )}
+          </motion.button>
         </div>
       </header>
 
