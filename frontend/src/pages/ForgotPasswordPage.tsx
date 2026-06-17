@@ -1,42 +1,29 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Building2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
-import { authApi } from "../api/auth.api";
+import { Link } from "react-router-dom";
 import { Button } from "../components/common/Button";
 import { Input } from "../components/common/Input";
 import { PublicLayout } from "../components/layout/PublicLayout";
+import { useForgotPassword } from "../hooks/useForgotPassword";
 import {
   forgotPasswordSchema,
   type ForgotPasswordFormValues,
 } from "../schemas/auth.schema";
 
 export function ForgotPasswordPage() {
-  const navigate = useNavigate();
+  const { submitForgotPassword, isSubmitting, previewUrl } = useForgotPassword();
+  
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
   });
 
   const onSubmit = async (values: ForgotPasswordFormValues) => {
-    try {
-      await authApi.forgotPassword(values);
-      toast.success("If this email exists, a reset link would be sent.");
-      navigate("/login");
-    } catch (error) {
-      if (error instanceof Error && error.message.includes("Network")) {
-        toast.error(
-          "Network error. Please check your connection and make sure the backend is running.",
-        );
-        return;
-      }
-
-      toast.error("Unable to submit reset request. Please try again.");
-    }
+    await submitForgotPassword(values);
   };
 
   return (
@@ -51,7 +38,7 @@ export function ForgotPasswordPage() {
             Reset Password
           </h1>
           <p className="mt-1 text-sm text-slate-600">
-            Secure reset request flow without SMTP integration.
+            Enter your email to receive a password reset link.
           </p>
         </div>
         <div className="space-y-4">
@@ -65,6 +52,14 @@ export function ForgotPasswordPage() {
         <Button type="submit" className="mt-6 w-full" disabled={isSubmitting}>
           {isSubmitting ? "Sending..." : "Send Reset Link"}
         </Button>
+        {previewUrl ? (
+          <div className="mt-4 rounded-md border border-brand-border bg-brand-light p-3 text-sm">
+            <p className="font-semibold text-brand-navy">Dev Mode: Email Preview</p>
+            <a href={previewUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block text-brand-blue hover:underline">
+              View Email on Ethereal
+            </a>
+          </div>
+        ) : null}
         <p className="mt-4 text-center text-sm text-slate-600">
           Remembered it?{" "}
           <Link to="/login" className="font-semibold text-brand-blue">

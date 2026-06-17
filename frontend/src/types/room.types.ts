@@ -17,6 +17,8 @@ export type Room = {
     rating: number;
     comment?: string | null;
     createdAt: string;
+    user?: { name: string };
+    booking?: { checkInDate: string; checkOutDate: string };
   }[];
 };
 

@@ -16,37 +16,67 @@ type RoomFilters = {
 };
 
 export const roomService = {
+  async listRoomTypes() {
+    const roomTypes = await prisma.room.groupBy({
+      by: ["type"],
+      orderBy: { type: "asc" },
+    });
+
+    return roomTypes.map((roomType) => roomType.type);
+  },
+
   async listRooms(filters: RoomFilters = {}) {
-    const checkInDate = filters.checkInDate ? toDateOnly(filters.checkInDate) : null;
-    const checkOutDate = filters.checkOutDate ? toDateOnly(filters.checkOutDate) : null;
-    const shouldFilterAvailability = Boolean(checkInDate && checkOutDate && filters.availableOnly !== "false");
+    const checkInDate = filters.checkInDate
+      ? toDateOnly(filters.checkInDate)
+      : null;
+    const checkOutDate = filters.checkOutDate
+      ? toDateOnly(filters.checkOutDate)
+      : null;
+    const shouldFilterAvailability = Boolean(
+      checkInDate && checkOutDate && filters.availableOnly !== "false",
+    );
 
     return prisma.room.findMany({
       where: {
-        type: filters.type ? { contains: filters.type, mode: "insensitive" } : undefined,
-        capacity: filters.capacity ? { gte: Number(filters.capacity) } : undefined,
+        type: filters.type
+          ? { contains: filters.type, mode: "insensitive" }
+          : undefined,
+        capacity: filters.capacity
+          ? { gte: Number(filters.capacity) }
+          : undefined,
         pricePerNight: {
           gte: filters.minPrice ? Number(filters.minPrice) : undefined,
-          lte: filters.maxPrice ? Number(filters.maxPrice) : undefined
+          lte: filters.maxPrice ? Number(filters.maxPrice) : undefined,
         },
         bookings: shouldFilterAvailability
           ? {
               none: {
                 status: "CONFIRMED",
                 checkInDate: { lt: checkOutDate! },
-                checkOutDate: { gt: checkInDate! }
-              }
+                checkOutDate: { gt: checkInDate! },
+              },
             }
-          : undefined
+          : undefined,
       },
       orderBy: { roomNumber: "asc" },
       include: {
         bookings: {
           where: { status: "CONFIRMED" },
-          select: { id: true, checkInDate: true, checkOutDate: true, status: true }
+          select: {
+            id: true,
+            checkInDate: true,
+            checkOutDate: true,
+            status: true,
+          },
         },
-        reviews: true
-      }
+        reviews: {
+          include: {
+            user: { select: { name: true } },
+            booking: { select: { checkInDate: true, checkOutDate: true } }
+          },
+          orderBy: { createdAt: "desc" }
+        },
+      },
     });
   },
 
@@ -60,7 +90,7 @@ export const roomService = {
 
   async createRoom(input: CreateRoomInput, createdById: string) {
     const existingRoom = await prisma.room.findUnique({
-      where: { roomNumber: input.roomNumber }
+      where: { roomNumber: input.roomNumber },
     });
 
     if (existingRoom) {
@@ -74,8 +104,8 @@ export const roomService = {
         capacity: input.capacity,
         pricePerNight: input.pricePerNight,
         description: input.description || null,
-        createdById
-      }
+        createdById,
+      },
     });
   },
 
@@ -83,7 +113,9 @@ export const roomService = {
     await this.getRoom(id);
 
     if (input.roomNumber) {
-      const existingRoom = await prisma.room.findUnique({ where: { roomNumber: input.roomNumber } });
+      const existingRoom = await prisma.room.findUnique({
+        where: { roomNumber: input.roomNumber },
+      });
       if (existingRoom && existingRoom.id !== id) {
         throw new ApiError(httpStatus.CONFLICT, "Room number already exists.");
       }
@@ -96,8 +128,8 @@ export const roomService = {
         type: input.type,
         capacity: input.capacity,
         pricePerNight: input.pricePerNight,
-        description: input.description === "" ? null : input.description
-      }
+        description: input.description === "" ? null : input.description,
+      },
     });
-  }
+  },
 };

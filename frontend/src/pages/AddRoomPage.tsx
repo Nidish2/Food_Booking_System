@@ -7,7 +7,7 @@ import type { RoomFormValues } from "../schemas/room.schema";
 
 export function AddRoomPage() {
   const navigate = useNavigate();
-  const { createRoomMutation, roomsQuery } = useRooms();
+  const { createRoomMutation, roomsQuery, roomTypesQuery } = useRooms();
 
   const handleSubmit = async (values: RoomFormValues) => {
     try {
@@ -24,12 +24,15 @@ export function AddRoomPage() {
       <div className="mb-6">
         <p className="text-sm font-semibold text-brand-blue">Room Management</p>
         <h1 className="text-3xl font-bold text-brand-navy">Add Room</h1>
-        <p className="mt-1 text-slate-600">Create a room with clear capacity and pricing details.</p>
+        <p className="mt-1 text-slate-600">
+          Create a room with clear capacity and pricing details.
+        </p>
       </div>
       <RoomForm
         onSubmit={handleSubmit}
         isSubmitting={createRoomMutation.isPending}
         existingRooms={roomsQuery.data ?? []}
+        roomTypes={roomTypesQuery.data ?? []}
       />
     </section>
   );

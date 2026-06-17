@@ -1,5 +1,5 @@
 import { apiClient } from "./apiClient";
-import type { AuthResponse } from "../types/auth.types";
+import type { AuthResponse, ForgotPasswordResponse } from "../types/auth.types";
 
 export const authApi = {
   async register(payload: { name: string; email: string; password: string }) {
@@ -22,6 +22,11 @@ export const authApi = {
   },
 
   async forgotPassword(payload: { email: string }) {
-    await apiClient.post("/auth/forgot-password", payload);
+    const { data } = await apiClient.post<{ data: ForgotPasswordResponse }>("/auth/forgot-password", payload);
+    return data.data;
+  },
+
+  async resetPassword(payload: { token: string; password: string }) {
+    await apiClient.post("/auth/reset-password", payload);
   }
 };

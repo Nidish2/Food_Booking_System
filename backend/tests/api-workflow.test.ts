@@ -13,7 +13,7 @@ const extractCookie = (response: Awaited<ReturnType<typeof request>> | any) => {
 };
 
 const adminCredentials = {
-  email: "admin@hotel.com",
+  email: `admin+${unique}@hotel.com`,
   password: "Admin@123"
 };
 
@@ -24,7 +24,7 @@ const guestCredentials = {
 
 beforeAll(async () => {
   await prisma.$connect();
-  await prisma.user.deleteMany({ where: { email: userEmail } });
+  await prisma.user.deleteMany({ where: { email: { in: [userEmail, adminCredentials.email] } } });
   await prisma.booking.deleteMany({
     where: {
       OR: [
@@ -34,7 +34,30 @@ beforeAll(async () => {
       ]
     }
   });
-  await prisma.room.deleteMany({ where: { roomNumber: "111" } });
+  await prisma.room.deleteMany({ where: { roomNumber: { in: ["101", "111"] } } });
+
+  const { hashPassword } = await import("../src/utils/password.js");
+  const passwordHash = await hashPassword(adminCredentials.password);
+
+  const admin = await prisma.user.create({
+    data: {
+      name: "Test Admin",
+      email: adminCredentials.email,
+      passwordHash,
+      role: "ADMIN"
+    }
+  });
+
+  await prisma.room.create({
+    data: {
+      roomNumber: "101",
+      type: "Deluxe King",
+      capacity: 2,
+      pricePerNight: 3200,
+      description: "Test room",
+      createdById: admin.id
+    }
+  });
 });
 
 afterAll(async () => {

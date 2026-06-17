@@ -7,7 +7,12 @@ export type User = {
 
 export type AuthResponse = {
   user: User;
-  token: string;
+};
+
+export type ForgotPasswordResponse = {
+  resetUrl?: string;
+  previewUrl?: string;
+  success?: boolean;
 };
 
 export type AdminUser = User & {

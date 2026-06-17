@@ -1,13 +1,15 @@
 import { Button } from "../common/Button";
 import { Input } from "../common/Input";
+import { AutocompleteInput } from "../common/AutocompleteInput";
 import type { RoomFilters as RoomFiltersType } from "../../types/room.types";
 
 type RoomFiltersProps = {
   value: RoomFiltersType;
   onChange: (value: RoomFiltersType) => void;
+  roomTypes: string[];
 };
 
-export function RoomFilters({ value, onChange }: RoomFiltersProps) {
+export function RoomFilters({ value, onChange, roomTypes }: RoomFiltersProps) {
   const update = (key: keyof RoomFiltersType, fieldValue: string) => {
     onChange({ ...value, [key]: fieldValue });
   };
@@ -27,11 +29,13 @@ export function RoomFilters({ value, onChange }: RoomFiltersProps) {
           value={value.checkOutDate ?? ""}
           onChange={(event) => update("checkOutDate", event.target.value)}
         />
-        <Input
+        <AutocompleteInput
           label="Room Type"
           placeholder="Suite"
           value={value.type ?? ""}
-          onChange={(event) => update("type", event.target.value)}
+          onChange={(nextValue) => update("type", nextValue)}
+          suggestions={roomTypes}
+          helperText="Filter by an existing type or type your own."
         />
         <Input
           label="Min Capacity"

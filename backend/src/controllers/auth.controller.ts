@@ -51,10 +51,19 @@ export const authController = {
   },
 
   async forgotPassword(req: Request, res: Response) {
-    await authService.forgotPassword(req.body);
+    const result = await authService.forgotPassword(req.body);
     res.status(httpStatus.OK).json({
       success: true,
-      message: "If this email exists, a password reset link would be sent."
+      message: "If this email exists, a password reset link would be sent.",
+      data: result
+    });
+  },
+
+  async resetPassword(req: Request, res: Response) {
+    await authService.resetPassword(req.body);
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: "Password reset successful. Please sign in with your new password."
     });
   }
 };

@@ -25,6 +25,7 @@ model User {
   role         UserRole  @default(USER)
   bookings     Booking[]
   reviews      Review[]
+  passwordResetTokens PasswordResetToken[]
   roomsCreated Room[]    @relation("RoomCreator")
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
@@ -79,4 +80,16 @@ model Review {
   updatedAt DateTime @updatedAt
 
   @@index([roomId, createdAt])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId, expiresAt])
 }

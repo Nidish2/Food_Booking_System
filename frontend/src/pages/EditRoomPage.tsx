@@ -10,7 +10,7 @@ import type { RoomFormValues } from "../schemas/room.schema";
 export function EditRoomPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { roomsQuery, updateRoomMutation } = useRooms();
+  const { roomsQuery, roomTypesQuery, updateRoomMutation } = useRooms();
   const room = roomsQuery.data?.find((item) => item.id === id);
 
   const handleSubmit = async (values: RoomFormValues) => {
@@ -31,21 +31,26 @@ export function EditRoomPage() {
     <section className="mx-auto max-w-3xl">
       <div className="mb-6">
         <p className="text-sm font-semibold text-brand-blue">Room Management</p>
-        <h1 className="text-3xl font-bold text-brand-navy">Edit Room {room.roomNumber}</h1>
-        <p className="mt-1 text-slate-600">Update room type, capacity, price, and description.</p>
+        <h1 className="text-3xl font-bold text-brand-navy">
+          Edit Room {room.roomNumber}
+        </h1>
+        <p className="mt-1 text-slate-600">
+          Update room type, capacity, price, and description.
+        </p>
       </div>
       <RoomForm
         onSubmit={handleSubmit}
         isSubmitting={updateRoomMutation.isPending}
         submitLabel="Update Room"
         existingRooms={roomsQuery.data ?? []}
+        roomTypes={roomTypesQuery.data ?? []}
         isEditMode
         defaultValues={{
           roomNumber: room.roomNumber,
           type: room.type,
           capacity: room.capacity,
           pricePerNight: Number(room.pricePerNight),
-          description: room.description ?? ""
+          description: room.description ?? "",
         }}
       />
     </section>

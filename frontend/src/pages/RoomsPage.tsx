@@ -20,13 +20,16 @@ export function RoomsPage() {
   const [filters, setFilters] = useState<RoomFiltersType>({});
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { roomsQuery } = useRooms(filters);
+  const { roomsQuery, roomTypesQuery } = useRooms(filters);
   const { createBookingMutation } = useBookings();
 
   const handleBooking = async (values: BookingFormValues) => {
     if (!selectedRoom) return;
     try {
-      await createBookingMutation.mutateAsync({ ...values, roomId: selectedRoom.id });
+      await createBookingMutation.mutateAsync({
+        ...values,
+        roomId: selectedRoom.id,
+      });
       toast.success("Booking created successfully.");
       setSelectedRoom(null);
     } catch (error) {
@@ -38,22 +41,36 @@ export function RoomsPage() {
     <section>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold text-brand-blue">Room Dashboard</p>
+          <p className="text-sm font-semibold text-brand-blue">
+            Room Dashboard
+          </p>
           <h1 className="text-3xl font-bold text-brand-navy">
             {user?.role === "ADMIN" ? "Room Inventory" : "Find Available Rooms"}
           </h1>
           <p className="mt-1 text-slate-600">
-            Use date, type, capacity, and price filters to find rooms that fit the stay.
+            Use date, type, capacity, and price filters to find rooms that fit
+            the stay.
           </p>
         </div>
       </div>
 
-      <RoomFilters value={filters} onChange={setFilters} />
+      <RoomFilters
+        value={filters}
+        onChange={setFilters}
+        roomTypes={roomTypesQuery.data ?? []}
+      />
 
-      {roomsQuery.isLoading ? <LoadingState message="Loading rooms..." /> : null}
-      {roomsQuery.isError ? <ErrorState message="Unable to load rooms." /> : null}
+      {roomsQuery.isLoading ? (
+        <LoadingState message="Loading rooms..." />
+      ) : null}
+      {roomsQuery.isError ? (
+        <ErrorState message="Unable to load rooms." />
+      ) : null}
       {roomsQuery.data?.length === 0 ? (
-        <EmptyState title="No rooms yet" message="Add a room to start accepting bookings." />
+        <EmptyState
+          title="No rooms yet"
+          message="Add a room to start accepting bookings."
+        />
       ) : null}
       <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         {roomsQuery.data?.map((room) => (

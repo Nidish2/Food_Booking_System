@@ -33,17 +33,17 @@ export function ProfilePage() {
         </div>
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           <div className="rounded-md bg-brand-light p-4">
-            <p className="text-sm text-slate-500">User ID</p>
-            <p className="mt-1 break-all font-semibold text-brand-navy">
-              {user?.id}
-            </p>
-          </div>
-          <div className="rounded-md bg-brand-light p-4">
             <p className="text-sm text-slate-500">Access</p>
             <p className="mt-1 font-semibold text-brand-navy">
               {user?.role === "ADMIN"
                 ? "Manage rooms, users, and bookings"
                 : "Book rooms and view own history"}
+            </p>
+          </div>
+          <div className="rounded-md bg-brand-light p-4">
+            <p className="text-sm text-slate-500">Privacy</p>
+            <p className="mt-1 font-semibold text-brand-navy">
+              Internal identifiers are hidden from the profile view.
             </p>
           </div>
         </div>
