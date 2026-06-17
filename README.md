@@ -93,7 +93,7 @@ A brief outline of instructions is provided below. For step-by-step guidance, en
 ```bash
 # Clone the repository
 git clone https://github.com/Nidish2/Hotel_Booking_System.git
-cd hotel-booking-system
+cd Hotel_Booking_System
 ```
 
 ### 2. Backend Initialization

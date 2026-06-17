@@ -7,14 +7,18 @@ This guide details the complete installation, environment configuration, databas
 ## 1. Getting Started
 
 ### Clone the Repository
+
 If you are starting from a fresh clone, download the project files using Git:
+
 ```bash
-git clone https://github.com/your-username/hotel-booking-system.git
-cd hotel-booking-system
+git clone https://github.com/Nidish2/Hotel_Booking_System.git
+cd Hotel_Booking_System
 ```
 
 ### Extracting from a ZIP Archive
+
 If you received this project as a ZIP file, extract it to your preferred directory:
+
 - **Windows (PowerShell):**
   ```powershell
   Expand-Archive -Path .\Hotel_Booking_System.zip -DestinationPath .\Hotel_Booking_System
@@ -33,14 +37,18 @@ If you received this project as a ZIP file, extract it to your preferred directo
 The backend is built using Node.js, Express, and Prisma ORM with PostgreSQL.
 
 ### Step A: Install Dependencies
+
 Open a terminal in the project root and navigate to the backend directory:
+
 ```bash
 cd backend
 npm install
 ```
 
 ### Step B: Create the `.env` File
+
 Create a `.env` file in the `backend` directory:
+
 ```bash
 # Windows
 New-Item -Path .env -ItemType File
@@ -49,7 +57,9 @@ touch .env
 ```
 
 ### Step C: Generate a Cryptographically Secure JWT Secret
+
 The backend requires a secure `JWT_SECRET` key to sign and verify web tokens. Choose one of the following methods to generate a 32-byte key:
+
 - **Node.js (Recommended):**
   ```bash
   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
@@ -65,7 +75,9 @@ The backend requires a secure `JWT_SECRET` key to sign and verify web tokens. Ch
   ```
 
 ### Step D: Database Setup (PostgreSQL via Neon)
+
 This application uses PostgreSQL. We recommend Neon for a hosted serverless database.
+
 1. Sign up or log in at the [Neon Console](https://console.neon.tech/).
 2. Create a new project (e.g., `hotel-booking-system`).
 3. Under **Connection Details**, select **Prisma** or **PostgreSQL** connection string. It will look like:
@@ -73,6 +85,7 @@ This application uses PostgreSQL. We recommend Neon for a hosted serverless data
 4. Copy this connection string.
 
 ### Step E: Configure Environment Variables
+
 Open the `backend/.env` file and populate it with the template below. Replace placeholders with your actual secrets and connection string.
 
 ```env
@@ -90,7 +103,9 @@ CLIENT_URL="http://localhost:5173"
 ```
 
 ### Step F: Run Prisma Migrations and Seed Data
+
 Prisma is used to manage database schema updates and seed files. Apply the migrations and populate the tables with default records:
+
 ```bash
 # Generate Prisma Client
 npx prisma generate
@@ -104,15 +119,19 @@ npx prisma db seed
 
 > [!NOTE]
 > The seeding script creates:
+>
 > - **1 Admin User:** `nidish2207@gmail.com`
 > - **9 Guest Users:** (e.g., `sanvith@example.com`, `sujay@example.com`, `sridevi@example.com`)
 > - **Standard Password:** All seeded accounts share the password `Password@123`.
 
 ### Step G: Start the Backend Development Server
+
 ```bash
 npm run dev
 ```
+
 The server will start, typically logging:
+
 ```text
 [server]: Server is running at http://localhost:5000
 [database]: Connected to PostgreSQL successfully via Prisma
@@ -125,14 +144,18 @@ The server will start, typically logging:
 The frontend is built using React 18, Vite, TypeScript, and Tailwind CSS.
 
 ### Step A: Install Dependencies
+
 Open a separate terminal window and navigate to the frontend directory:
+
 ```bash
 cd frontend
 npm install
 ```
 
 ### Step B: Create the `.env.local` File
+
 Create a `.env.local` file in the `frontend` directory:
+
 ```bash
 # Windows
 New-Item -Path .env.local -ItemType File
@@ -141,21 +164,27 @@ touch .env.local
 ```
 
 ### Step C: Configure Variables
+
 Edit `frontend/.env.local` and add the base URL matching your backend server:
+
 ```env
 VITE_API_BASE_URL="http://localhost:5000/api"
 ```
 
 ### Step D: Start the Frontend Development Server
+
 ```bash
 npm run dev
 ```
+
 The console will display the local port details:
+
 ```text
   VITE v8.0.0  ready in 400 ms
 
   ➜  Local:   http://localhost:5173/
 ```
+
 Open [http://localhost:5173/](http://localhost:5173/) in your browser to view the application interface.
 
 ---
@@ -165,14 +194,18 @@ Open [http://localhost:5173/](http://localhost:5173/) in your browser to view th
 If you need to test the production build locally:
 
 ### Backend Build
+
 In the `backend` directory:
+
 ```bash
 npm run build
 npm start
 ```
 
 ### Frontend Build
+
 In the `frontend` directory:
+
 ```bash
 npm run build
 npm run preview
@@ -186,16 +219,19 @@ The application features unit and integration test suites using Vitest, Supertes
 
 - **Running Backend API Tests:**
   Navigate to the `backend` directory and run:
+
   ```bash
   npm run test
   ```
-  This runs all API routes, token verification, permission logic, and transaction-level double-booking validations.
 
+  This runs all API routes, token verification, permission logic, and transaction-level double-booking validations.
 - **Running Frontend Component and Utility Tests:**
   Navigate to the `frontend` directory and run:
+
   ```bash
   npm run test
   ```
+
   This runs validations for UI components, custom hooks, date calculation logic, and responsive forms.
 
 *For details on the exact test cases and coverage statistics, refer to [TEST_REPORT.md](file:///e:/Videos/Projects/Hotel_Booking_System/docs/TEST_REPORT.md).*
@@ -205,6 +241,7 @@ The application features unit and integration test suites using Vitest, Supertes
 ## 6. Verification Checklist
 
 To confirm the setup has succeeded, check the following items:
+
 - [ ] Backend server starts on port `5000` without database connection errors.
 - [ ] Frontend server starts on port `5173`.
 - [ ] You can log in using `nidish2207@gmail.com` / `Password@123` (Admin).
@@ -217,7 +254,9 @@ To confirm the setup has succeeded, check the following items:
 ## 7. Troubleshooting
 
 ### Port Conflict (Address already in use)
+
 If port `5000` or `5173` is already taken, you can locate and kill the process:
+
 - **Windows (PowerShell):**
   ```powershell
   # Find PID on port 5000
@@ -232,6 +271,7 @@ If port `5000` or `5173` is already taken, you can locate and kill the process:
   ```
 
 ### Database Connection Failures
+
 - Verify your IP is allowed in your Neon database dashboard (Neon's default allows all connections with SSL).
 - Ensure the connection string ends with `?sslmode=require`.
 - Double-check database credentials in the `DATABASE_URL` string inside `backend/.env`.
