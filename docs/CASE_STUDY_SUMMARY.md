@@ -1,34 +1,39 @@
-# Hotel Booking System - Case Study Summary
+# Case Study: Hotel Booking System Summary
 
-## Candidate & Assignment Details
-- **Project Name:** Hotel Booking System
-- **Objective:** Build an end-to-end application to manage rooms and bookings, preventing double bookings, and maintaining secure access.
-- **Timeline:** Submitted for review.
+This summary provides an overview of the development, architecture, and deployment features of the Hotel Booking System.
 
-## Technology Stack
-- **Frontend:** React 18, Vite, TypeScript, Tailwind CSS, React Hook Form, Zod, React Router.
-- **Backend:** Node.js, Express, TypeScript, Prisma ORM, PostgreSQL, JSON Web Tokens (JWT).
-- **Testing:** Vitest, Supertest (Backend API workflows).
-- **Security:** Helmet, Express Rate Limit, bcryptjs, Ethereal Email (mock SMTP).
+---
 
-## Key Features & Implementations
-1. **Authentication & Security:** 
-   - JWT-based authentication with secure, HTTP-only cookies.
-   - Comprehensive forgot password workflow with simulated email delivery and strict rate limiting to prevent enumeration attacks.
-   - Helmet integration for secure HTTP headers.
-2. **Room & Booking Management:**
-   - Full CRUD for rooms (Admin only).
-   - Booking system with double-booking prevention using Prisma transactions and date-overlap logic.
-3. **Architecture:**
-   - Separation of concerns: UI components handle pure rendering, Custom Hooks manage API calls and state, Pages assemble components.
-   - Controller-Service-Route backend pattern.
+## 1. Core Technology Stack
+- **Backend Service:** Node.js, Express, TypeScript, and Prisma ORM.
+- **Database Engine:** PostgreSQL hosted on Neon (Serverless database).
+- **Frontend Client:** React 18, Vite, TypeScript, and Tailwind CSS.
+- **Testing Suites:** Vitest, Supertest (API endpoints), and React Testing Library.
+- **Security Utilities:** JSON Web Tokens (JWT), HTTP cookie storage, `bcryptjs`, and `helmet` headers.
 
-## Assumptions Made
-1. **Mock Email Provider:** Instead of requiring real SMTP credentials (SendGrid, etc.), Ethereal Email was used to provide a free, complete end-to-end forgot password flow that is "hacker safe" and fully functional for demonstration.
-2. **User Exposure:** UUIDs are used for database primary keys. Exposing them to the client is considered safe and necessary for state management, unlike sequential integer IDs.
-3. **Roles:** Only two roles (USER, ADMIN) are needed. ADMIN can create rooms; USER can book.
+---
 
-## AI Tools Usage & Experience
-- **Tools Used:** Advanced agentic AI models (ChatGPT/Claude/Gemini) were used during development for scaffolding boilerplate, architectural planning, and generating strict TypeScript types.
-- **How they helped:** They significantly accelerated the initial setup of the Prisma schema, Express middleware, and complex React Hook Form validation logic. They were also instrumental in quickly refactoring components to adhere to strict design patterns.
-- **Challenges Encountered:** Coordinating the mock email flow (Ethereal) to be both "user-friendly" and "hacker safe" required careful prompting to ensure standard security practices (like not exposing email existence) were maintained while fulfilling UX requirements.
+## 2. Key Application Features
+- **Double-Booking Prevention:** Checks date availability within database transactions, returning standard `409 Conflict` errors on overlaps.
+- **Role-Based Access Control:** Separate permission tiers for guests, logged-in users, and administrators.
+- **Admin Management Panel:** Allows administrators to create new rooms, edit room prices/capacities, view registered users, and inspect booking lists.
+- **Interactive Search and Filters:** Guests search for rooms by type, capacity, pricing, and specific date ranges.
+- **Review and Rating System:** Allows guests to submit 1-5 star ratings and reviews for completed bookings (verified post-checkout).
+- **Premium UI with Theme Toggle:** Glassmorphism dashboard with smooth transitions, accessible light/dark theme options, and modals rendered using React Portals.
+- **Robust Security Framework:** Centralized error handling, route rate limiting, and password hashing.
+
+---
+
+## 3. Core Development Assumptions
+- **Single-Location Facility:** The system handles inventory for a single hotel with distinct, numbered rooms.
+- **Date-Based Availability:** Room availability is evaluated dynamically based on date range queries, rather than using a static status flag.
+- **Instant Booking Confirmations:** Reservations are confirmed immediately, bypassing the need for payment integrations.
+- **Developer Mail Loop:** Password resets use a mock SMTP setup (Ethereal Email), returning preview URLs in notifications for validation.
+- **Evaluation Settings:** Database seed scripts configure accounts with a shared password (`Password@123`) to simplify testing.
+
+---
+
+## 4. AI-Assisted Development Retrospective
+- **Tool Selection:** ChatGPT was used for syntax debugging, Gemini for boilerplates and design verification, and Codex for inline autocomplete.
+- **Key Benefits:** Automated setup of Prisma configurations, Vitest test suites, and database seed data, allowing more time for core transaction logic.
+- **Technical Challenges:** Testing review permissions required direct database injection to mock completed bookings, and resolving preflight errors required ordering the CORS and rate-limiting middleware.
