@@ -12,8 +12,8 @@ export function ReviewForm({ onSubmit, isSubmitting }: ReviewFormProps) {
   const [comment, setComment] = useState("");
 
   return (
-    <div className="mt-4 rounded-md border border-brand-border bg-white p-3">
-      <p className="mb-2 text-sm font-semibold text-brand-navy">Add feedback</p>
+    <div className="mt-4 rounded-xl border border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 p-4 shadow-sm transition-colors duration-300">
+      <p className="mb-2 text-sm font-bold text-slate-800 dark:text-slate-200">Add feedback</p>
       <div className="mb-3 flex items-center gap-2">
         {[1, 2, 3, 4, 5].map((value) => (
           <button key={value} type="button" onClick={() => setRating(value)} aria-label={`${value} star rating`}>
@@ -24,10 +24,10 @@ export function ReviewForm({ onSubmit, isSubmitting }: ReviewFormProps) {
       <textarea
         value={comment}
         onChange={(event) => setComment(event.target.value)}
-        className="min-h-20 w-full rounded-md border border-brand-border px-3 py-2 text-sm outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/15"
+        className="min-h-20 w-full rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2.5 text-sm text-slate-900 dark:text-white outline-none transition-all placeholder-slate-400 dark:placeholder-slate-500 focus:border-brand-navy/60 dark:focus:border-brand-blue/60 focus:ring-4 focus:ring-brand-navy/10 dark:focus:ring-brand-blue/15"
         placeholder="What went well?"
       />
-      <Button className="mt-3" onClick={() => onSubmit({ rating, comment })} disabled={isSubmitting}>
+      <Button className="mt-3 w-full" onClick={() => onSubmit({ rating, comment })} disabled={isSubmitting}>
         {isSubmitting ? "Submitting..." : "Submit Feedback"}
       </Button>
     </div>

@@ -1,4 +1,4 @@
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useNavigate, useParams } from "react-router-dom";
 import { getApiErrorMessage } from "../api/apiClient";
 import { ErrorState } from "../components/common/ErrorState";
@@ -28,31 +28,34 @@ export function EditRoomPage() {
   if (!room) return <ErrorState message="Room not found." />;
 
   return (
-    <section className="mx-auto max-w-3xl">
-      <div className="mb-6">
-        <p className="text-sm font-semibold text-brand-blue">Room Management</p>
-        <h1 className="text-3xl font-bold text-brand-navy">
+    <section className="mx-auto max-w-3xl space-y-6">
+      <div>
+        <p className="text-xs font-bold uppercase tracking-wider text-brand-blue dark:text-blue-400">Room Management</p>
+        <h1 className="mt-1 text-3xl font-extrabold text-brand-navy dark:text-white tracking-tight">
           Edit Room {room.roomNumber}
         </h1>
-        <p className="mt-1 text-slate-600">
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           Update room type, capacity, price, and description.
         </p>
       </div>
-      <RoomForm
-        onSubmit={handleSubmit}
-        isSubmitting={updateRoomMutation.isPending}
-        submitLabel="Update Room"
-        existingRooms={roomsQuery.data ?? []}
-        roomTypes={roomTypesQuery.data ?? []}
-        isEditMode
-        defaultValues={{
-          roomNumber: room.roomNumber,
-          type: room.type,
-          capacity: room.capacity,
-          pricePerNight: Number(room.pricePerNight),
-          description: room.description ?? "",
-        }}
-      />
+      <div className="rounded-2xl border border-slate-100 dark:border-white/5 bg-white dark:bg-zinc-900/50 p-6 shadow-[0_8px_30px_rgb(0,0,0,0.02)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.2)] transition-colors duration-300">
+        <RoomForm
+          onSubmit={handleSubmit}
+          isSubmitting={updateRoomMutation.isPending}
+          submitLabel="Update Room"
+          existingRooms={roomsQuery.data ?? []}
+          roomTypes={roomTypesQuery.data ?? []}
+          isEditMode
+          defaultValues={{
+            roomNumber: room.roomNumber,
+            type: room.type,
+            capacity: room.capacity,
+            pricePerNight: Number(room.pricePerNight),
+            description: room.description ?? "",
+          }}
+        />
+      </div>
     </section>
   );
 }
+

@@ -7,10 +7,10 @@ type BadgeProps = {
 };
 
 const tones = {
-  success: "bg-green-50 text-brand-success",
-  warning: "bg-amber-50 text-brand-warning",
-  danger: "bg-red-50 text-brand-danger",
-  neutral: "bg-slate-100 text-slate-700"
+  success: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+  warning: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
+  danger: "bg-red-500/10 text-brand-red dark:text-red-400",
+  neutral: "bg-slate-500/10 text-slate-600 dark:text-slate-400"
 };
 
 export function Badge({ tone = "neutral", children }: BadgeProps) {

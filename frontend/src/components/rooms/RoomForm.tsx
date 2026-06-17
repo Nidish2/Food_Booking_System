@@ -63,7 +63,7 @@ export function RoomForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4 rounded-lg bg-white p-6 shadow-sm"
+      className="space-y-4 rounded-2xl bg-white dark:bg-zinc-900 p-6 shadow-sm border border-slate-100 dark:border-zinc-800 transition-colors duration-300"
     >
       <div className="grid gap-4 md:grid-cols-2">
         <Controller
@@ -110,12 +110,12 @@ export function RoomForm({
           {...register("pricePerNight")}
         />
       </div>
-      <label className="block">
-        <span className="mb-1 block text-sm font-semibold text-slate-700">
+      <label className="block text-left">
+        <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Description
         </span>
         <textarea
-          className="min-h-28 w-full rounded-md border border-brand-border px-3 py-2 outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/15"
+          className="min-h-28 w-full rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2.5 text-sm text-slate-900 dark:text-white outline-none transition-all placeholder-slate-400 dark:placeholder-slate-500 focus:border-brand-navy/60 dark:focus:border-brand-blue/60 focus:ring-4 focus:ring-brand-navy/10 dark:focus:ring-brand-blue/15"
           placeholder="Short room description"
           {...register("description")}
         />

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { authApi } from "../api/auth.api";
 import type { ForgotPasswordFormValues } from "../schemas/auth.schema";
 
@@ -15,7 +15,7 @@ export function useForgotPassword() {
       if (result?.previewUrl) {
         setPreviewUrl(result.previewUrl);
         // Show a dev-only toast if preview is available
-        toast.success("Dev: Email preview generated.", { duration: 5000 });
+        toast.success("Dev Sandbox: Password Reset Email generated successfully.");
       } else {
         // Standard success message
         toast.success("If an account exists, a password reset link has been sent.");
@@ -39,3 +39,4 @@ export function useForgotPassword() {
     previewUrl,
   };
 }
+

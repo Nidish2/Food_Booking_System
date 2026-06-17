@@ -9,29 +9,33 @@ import { httpStatus } from "./constants/httpStatus.js";
 
 export const app = express();
 
-import helmet from "helmet";
-import { rateLimit } from "express-rate-limit";
-
-app.use(helmet());
-
-const limiter = process.env.NODE_ENV === "test"
-  ? (req: any, res: any, next: any) => next()
-  : rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
-      standardHeaders: "draft-7", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
-      legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
-    });
-
-// Apply the rate limiting middleware to all requests.
-app.use(limiter);
-
 app.use(
   cors({
     origin: env.CLIENT_URL,
     credentials: true
   })
 );
+
+import helmet from "helmet";
+import { rateLimit } from "express-rate-limit";
+
+app.use(helmet());
+
+const limiter = process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"
+  ? (req: any, res: any, next: any) => next()
+  : rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      limit: 1000, // Global limit of 1000 requests per 15 minutes
+      standardHeaders: "draft-7",
+      legacyHeaders: false,
+      message: {
+        success: false,
+        message: "Too many requests, please try again later."
+      }
+    });
+
+// Apply the rate limiting middleware to all requests.
+app.use(limiter);
 app.use(express.json());
 app.use(cookieParser());
 

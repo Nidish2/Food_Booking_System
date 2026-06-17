@@ -66,7 +66,7 @@ export function AutocompleteInput({
     <div ref={wrapperRef} className={clsx("relative block", className)}>
       <label
         htmlFor={inputId}
-        className="mb-1 block text-sm font-semibold text-slate-700"
+        className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400"
       >
         {label}
       </label>
@@ -91,15 +91,15 @@ export function AutocompleteInput({
             }
           }}
           className={clsx(
-            "min-h-11 w-full rounded-md border border-brand-border bg-white px-3 py-2 outline-none transition placeholder:text-slate-400 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/15",
-            error && "border-brand-danger",
+            "min-h-11 w-full rounded-xl border border-slate-200/80 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-850/40 backdrop-blur-sm px-4 py-2.5 text-sm text-slate-900 dark:text-white outline-none transition-all placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white/95 dark:focus:bg-zinc-800/90 focus:border-brand-navy/60 dark:focus:border-brand-blue/60 focus:ring-4 focus:ring-brand-navy/10 dark:focus:ring-brand-blue/15",
+            error && "border-brand-red focus:border-brand-red/60 focus:ring-brand-red/10",
           )}
         />
         {isOpen && filteredSuggestions.length > 0 && !disabled ? (
           <div
             id={listId}
             role="listbox"
-            className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 max-h-56 overflow-auto rounded-xl border border-slate-200 bg-white p-1 shadow-2xl"
+            className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 max-h-56 overflow-auto rounded-xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/90 dark:bg-zinc-900/80 backdrop-blur-md p-1 shadow-2xl"
           >
             {filteredSuggestions.map((suggestion) => (
               <button
@@ -113,10 +113,10 @@ export function AutocompleteInput({
                   setIsOpen(false);
                 }}
                 className={clsx(
-                  "flex w-full items-center rounded-lg px-3 py-2 text-left text-sm transition hover:bg-brand-light",
+                  "flex w-full items-center rounded-lg px-3 py-2 text-left text-sm transition hover:bg-slate-100 dark:hover:bg-zinc-700/50",
                   suggestion === value
-                    ? "bg-brand-light text-brand-navy"
-                    : "text-slate-700",
+                    ? "bg-slate-100 dark:bg-zinc-700 text-brand-navy dark:text-white"
+                    : "text-slate-700 dark:text-slate-200",
                 )}
               >
                 {suggestion}
@@ -126,10 +126,10 @@ export function AutocompleteInput({
         ) : null}
       </div>
       {helperText ? (
-        <p className="mt-1 text-xs text-slate-500">{helperText}</p>
+        <p className="mt-1.5 text-xs text-slate-400 dark:text-slate-500">{helperText}</p>
       ) : null}
       {error ? (
-        <span className="mt-1 block text-sm text-brand-danger">{error}</span>
+        <span className="mt-1.5 block text-xs font-semibold text-brand-red animate-pulse">{error}</span>
       ) : null}
     </div>
   );
