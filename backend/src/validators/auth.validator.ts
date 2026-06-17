@@ -53,6 +53,7 @@ const commonPasswords = [
   "qwertyuiop",
   "starwars",
   "1234567890",
+  "welcome@123"
 ];
 
 export const registerSchema = z.object({
