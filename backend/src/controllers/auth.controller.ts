@@ -50,7 +50,12 @@ export const authController = {
   },
 
   async logout(_req: Request, res: Response) {
-    res.clearCookie("token");
+    const isProd = env.NODE_ENV === "production";
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: isProd ? "none" : "lax",
+      secure: isProd ? true : false,
+    });
     res.status(httpStatus.OK).json({
       success: true,
       message: "Logout successful.",

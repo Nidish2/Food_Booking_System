@@ -25,8 +25,12 @@ export function useAuth() {
   });
 
   const logout = async () => {
-    await authApi.logout();
-    queryClient.clear();
+    try {
+      await authApi.logout();
+    } finally {
+      queryClient.setQueryData(["me"], null);
+      queryClient.clear();
+    }
   };
 
   return {
