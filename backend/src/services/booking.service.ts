@@ -120,5 +120,33 @@ export const bookingService = {
         comment: input.comment || null
       }
     });
+  },
+
+  async cancelBooking(bookingId: string, userId: string, role: "USER" | "ADMIN") {
+    const booking = await prisma.booking.findUnique({
+      where: { id: bookingId }
+    });
+
+    if (!booking) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Booking not found.");
+    }
+
+    if (role !== "ADMIN" && booking.userId !== userId) {
+      throw new ApiError(httpStatus.FORBIDDEN, "Not authorized to cancel this booking.");
+    }
+
+    if (booking.status === bookingStatus.CANCELLED) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Booking is already cancelled.");
+    }
+
+    if (role !== "ADMIN" && booking.checkInDate <= getTodayUtc()) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Cannot cancel a booking that has already started.");
+    }
+
+    return prisma.booking.update({
+      where: { id: bookingId },
+      data: { status: bookingStatus.CANCELLED },
+      include: { room: true, review: true }
+    });
   }
 };

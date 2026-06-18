@@ -12,3 +12,5 @@ bookingRoutes.post("/", validate(createBookingSchema), asyncHandler(bookingContr
 bookingRoutes.get("/my", asyncHandler(bookingController.getMyBookings));
 bookingRoutes.get("/history", asyncHandler(bookingController.getBookingHistory));
 bookingRoutes.post("/:id/review", validate(reviewSchema), asyncHandler(bookingController.addReview));
+bookingRoutes.post("/:id/cancel", asyncHandler(bookingController.cancelBooking));
+

@@ -38,5 +38,14 @@ export const bookingController = {
       message: "Feedback submitted successfully.",
       data: { review }
     });
+  },
+
+  async cancelBooking(req: Request, res: Response) {
+    const booking = await bookingService.cancelBooking(req.params.id, req.user!.id, req.user!.role);
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: "Booking cancelled successfully.",
+      data: { booking }
+    });
   }
 };

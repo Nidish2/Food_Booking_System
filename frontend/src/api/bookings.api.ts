@@ -28,5 +28,10 @@ export const bookingsApi = {
   async addReview(bookingId: string, payload: { rating: number; comment?: string }) {
     const { data } = await apiClient.post<{ data: { review: Review } }>(`/bookings/${bookingId}/review`, payload);
     return data.data.review;
+  },
+
+  async cancel(bookingId: string) {
+    const { data } = await apiClient.post<{ data: { booking: Booking } }>(`/bookings/${bookingId}/cancel`);
+    return data.data.booking;
   }
 };

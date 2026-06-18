@@ -12,6 +12,7 @@ import { formatCurrency } from "../../utils/currency";
 import { calculateNights, formatDate } from "../../utils/date";
 import { Button } from "../common/Button";
 import { StarRating } from "../common/StarRating";
+import { ConfirmModal } from "../common/ConfirmModal";
 
 const getBookingStatus = (booking: Booking) => {
   if (booking.status === "CANCELLED") return { label: "CANCELLED", tone: "warning" as const };
@@ -40,8 +41,9 @@ const cardVariants = {
 
 export function BookingHistoryTable({ bookings }: { bookings: Booking[] }) {
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [bookingToCancel, setBookingToCancel] = useState<string | null>(null);
   const { user } = useAuth();
-  const { addReviewMutation } = useBookings();
+  const { addReviewMutation, cancelBookingMutation } = useBookings();
 
   const canReview = (booking: Booking) =>
     user?.role !== "ADMIN" &&
@@ -55,6 +57,22 @@ export function BookingHistoryTable({ bookings }: { bookings: Booking[] }) {
       toast.success("Feedback submitted successfully.");
     } catch (error) {
       toast.error(getApiErrorMessage(error));
+    }
+  };
+
+  const handleCancelClick = (bookingId: string) => {
+    setBookingToCancel(bookingId);
+  };
+
+  const handleConfirmCancel = async () => {
+    if (!bookingToCancel) return;
+    try {
+      await cancelBookingMutation.mutateAsync(bookingToCancel);
+      toast.success("Booking cancelled successfully.");
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    } finally {
+      setBookingToCancel(null);
     }
   };
 
@@ -132,9 +150,20 @@ export function BookingHistoryTable({ bookings }: { bookings: Booking[] }) {
                 ) : null}
               </div>
               
-              <Button className="mt-5 w-full" variant="secondary" onClick={() => setSelectedBooking(booking)}>
-                View Details
-              </Button>
+              <div className="mt-5 flex gap-3">
+                <Button className="w-full" variant="secondary" onClick={() => setSelectedBooking(booking)}>
+                  View Details
+                </Button>
+                {status.label === "UPCOMING" ? (
+                  <Button
+                    className="w-full"
+                    variant="danger"
+                    onClick={() => handleCancelClick(booking.id)}
+                  >
+                    Cancel
+                  </Button>
+                ) : null}
+              </div>
             </motion.article>
           );
         })}
@@ -144,6 +173,16 @@ export function BookingHistoryTable({ bookings }: { bookings: Booking[] }) {
           <BookingDetailModal booking={selectedBooking} onClose={() => setSelectedBooking(null)} />
         ) : null}
       </AnimatePresence>
+      <ConfirmModal
+        isOpen={Boolean(bookingToCancel)}
+        title="Cancel Booking"
+        message="Are you sure you want to cancel this booking? This will release your room reservation slot."
+        confirmLabel="Yes, Cancel"
+        cancelLabel="No, Keep"
+        onConfirm={handleConfirmCancel}
+        onCancel={() => setBookingToCancel(null)}
+        isConfirming={cancelBookingMutation.isPending}
+      />
     </>
   );
 }

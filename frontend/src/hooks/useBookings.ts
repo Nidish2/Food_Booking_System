@@ -26,5 +26,13 @@ export function useBookings(status?: BookingDisplayStatus) {
     }
   });
 
-  return { historyQuery, createBookingMutation, addReviewMutation };
+  const cancelBookingMutation = useMutation({
+    mutationFn: (bookingId: string) => bookingsApi.cancel(bookingId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["booking-history"] });
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+    }
+  });
+
+  return { historyQuery, createBookingMutation, addReviewMutation, cancelBookingMutation };
 }
