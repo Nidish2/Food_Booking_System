@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Building2 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -13,7 +14,13 @@ import { loginSchema, type LoginFormValues } from "../schemas/auth.schema";
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { loginMutation } = useAuth();
+  const { loginMutation, isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, isLoading, navigate]);
   const {
     register,
     handleSubmit,

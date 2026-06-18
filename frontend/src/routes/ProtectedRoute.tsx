@@ -1,14 +1,14 @@
 import { Navigate, Outlet } from "react-router-dom";
 import axios from "axios";
-import { LoadingState } from "../components/common/LoadingState";
 import { ErrorState } from "../components/common/ErrorState";
 import { useAuth } from "../hooks/useAuth";
+import { LoginPage } from "../pages/LoginPage";
 
 export function ProtectedRoute() {
   const { isAuthenticated, isLoading, authError } = useAuth();
 
   if (isLoading) {
-    return <LoadingState message="Checking your session..." />;
+    return <LoginPage />;
   }
 
   if (authError) {
